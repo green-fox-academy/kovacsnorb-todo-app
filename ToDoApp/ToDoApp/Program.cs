@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ToDoApp
 {
@@ -86,6 +84,26 @@ namespace ToDoApp
 
                     int inputTask = int.Parse(args[1]);
                     contentDetailed[inputTask - 1][1] = "true";
+
+                    for (int i = 0; i < contentDetailed.Count(); i++)
+                    {
+                        writer.WriteLine(contentDetailed[i][0] + ";" + contentDetailed[i][1] + ";" + contentDetailed[i][2]);
+                    }
+                }
+            }
+
+            if (args.Contains("-r"))
+            {
+                path = @"./todolist.txt";
+                content = File.ReadAllLines(path);
+                using (StreamWriter writer = new StreamWriter(path))
+                {
+                    for (int i = 0; i < content.Count(); i++)
+                    {
+                        contentDetailed.Add(content[i].Split(';'));
+                    }
+
+                    contentDetailed.RemoveAt(int.Parse(args[1]) - 1);
 
                     for (int i = 0; i < contentDetailed.Count(); i++)
                     {
