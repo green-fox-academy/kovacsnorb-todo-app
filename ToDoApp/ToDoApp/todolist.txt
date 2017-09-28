@@ -1,0 +1,3 @@
+﻿Walk the dog;true;Have a walk with the dog as Furkesz needs some fresh air.
+Buy milk;false;Because there are just empty boxes in the fridge.
+Do homework;false;Demo, lightning talk, exam preparation.
