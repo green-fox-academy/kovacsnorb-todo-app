@@ -31,12 +31,20 @@ namespace ToDoApp
                 {
                     Console.WriteLine("\n");
                     string[] content = File.ReadAllLines(path);
-                    List<string[]> contentDetailed = new List<string[]>();
 
-                    for (int i = 0; i < content.Count(); i++)
+                    if (content.Length != 0)
                     {
-                        contentDetailed.Add(content[i].Split(';'));
-                        Console.WriteLine("  " + (i + 1) + " - " + contentDetailed[i][0]);
+                        List<string[]> contentDetailed = new List<string[]>();
+
+                        for (int i = 0; i < content.Count(); i++)
+                        {
+                            contentDetailed.Add(content[i].Split(';'));
+                            Console.WriteLine("  " + (i + 1) + " - " + contentDetailed[i][0]);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("  No todos for today! :) ");
                     }
                 }
                 catch (FileNotFoundException)
