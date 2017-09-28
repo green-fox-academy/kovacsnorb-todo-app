@@ -12,11 +12,14 @@ namespace ToDoApp
             string[] content;
             var toDos = new List<ToDo>(); 
 
+            if (!(args.Contains("-l") || args.Contains("-a") || args.Contains("-c") || args.Contains("-r") || args.Length == 0))
+            {
+                UnsupportedArg();
+            }
             if (args.Length == 0)
             {
                 PrintUsage();
             }
-
             if (args.Contains("-l"))
             {
                 try
@@ -123,6 +126,12 @@ namespace ToDoApp
                     }
                 }
             }
+        }
+
+        public static void UnsupportedArg()
+        {
+            Console.WriteLine("\n *** Unsupported argument ***");
+            PrintUsage();
         }
     }
 }
