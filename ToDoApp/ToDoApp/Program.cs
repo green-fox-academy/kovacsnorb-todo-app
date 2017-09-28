@@ -11,7 +11,6 @@ namespace ToDoApp
     {
         static void Main(string[] args)
         {
-
             if (args.Length == 0)
             {
                 Console.WriteLine("\n  Command Line Todo application" +
@@ -26,9 +25,9 @@ namespace ToDoApp
 
             if (args.Contains("-l"))
             {
-                string path = @"./todolist.txt";
                 try
                 {
+                    string path = @"./todolist.txt";
                     Console.WriteLine("\n");
                     string[] content = File.ReadAllLines(path);
 
@@ -50,6 +49,17 @@ namespace ToDoApp
                 catch (FileNotFoundException)
                 {
                     Console.WriteLine("Could not read the file!");
+                }
+            }
+
+            if (args.Contains("-a"))
+            {
+                string path = @"./todolist.txt";
+                Console.WriteLine("\n");
+                using (StreamWriter writer = File.AppendText(path))
+                {
+                    string inputTask = args[1];
+                    writer.WriteLine(inputTask + ";false;" + inputTask);
                 }
             }
         }
