@@ -30,6 +30,10 @@ namespace ToDoApp
                     Console.WriteLine("Could not read the file!");
                 }
             }
+            if (args.Contains("-a"))
+            {
+                AddNewTask(args[1]);
+            }
         }
 
         public static void PrintUsage()
@@ -75,18 +79,19 @@ namespace ToDoApp
                 }
             }
         }
+
+        public static void AddNewTask(string newTask, string path = "./todolist.txt")
+        {
+            using (StreamWriter writer = File.AppendText(path))
+            {
+                writer.WriteLine(newTask + ";false;" + newTask);
+            }
+        }
     }
 }
 
 
-//if (args.Contains("-a"))
-//{
-//    path = @"./todolist.txt";
-//    using (StreamWriter writer = File.AppendText(path))
-//    {
-//        writer.WriteLine(args[1] + ";false;" + args[1]);
-//    }
-//}
+
 
 //if (args.Contains("-c"))
 //{
