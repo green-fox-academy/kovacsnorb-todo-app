@@ -34,11 +34,15 @@ namespace ToDoApp
             {
                 AddNewTask(args[1]);
             }
+            if (args.Contains("-c"))
+            {
+                CheckTask(args[1]);
+            }
         }
 
         public static void PrintUsage()
         {
-            Console.WriteLine("\n  Command Line Todo application" +
+            Console.WriteLine("\nCommand Line Todo application" +
             "\n=============================" +
             "\n" +
             "\nCommand line arguments:" +
@@ -87,32 +91,22 @@ namespace ToDoApp
                 writer.WriteLine(newTask + ";false;" + newTask);
             }
         }
+
+        public static void CheckTask(string finishedTask, string path = "./todolist.txt")
+        {
+            var list = FillToDoList(ReadFile());
+            using (StreamWriter writer = new StreamWriter(path))
+            {
+                list[int.Parse(finishedTask) - 1].SetStatus(true);
+
+                for (int i = 0; i < list.Count(); i++)
+                {
+                    writer.WriteLine(list[i].Name + ";" + list[i].IsDone + ";" + list[i].Description);
+                }
+            }
+        }
     }
 }
-
-
-
-
-//if (args.Contains("-c"))
-//{
-//    path = @"./todolist.txt";
-//    content = File.ReadAllLines(path);
-//    using (StreamWriter writer = new StreamWriter(path))
-//    {
-//        for (int i = 0; i < content.Count(); i++)
-//        {
-//            contentDetailed.Add(content[i].Split(';'));
-//        }
-
-//        int inputTask = int.Parse(args[1]);
-//        contentDetailed[inputTask - 1][1] = "true";
-
-//        for (int i = 0; i < contentDetailed.Count(); i++)
-//        {
-//            writer.WriteLine(contentDetailed[i][0] + ";" + contentDetailed[i][1] + ";" + contentDetailed[i][2]);
-//        }
-//    }
-//}
 
 //if (args.Contains("-r"))
 //{
