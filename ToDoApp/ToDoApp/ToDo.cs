@@ -18,5 +18,15 @@ namespace ToDoApp
             this.isDone = isDone;
             this.description = description;
         }
+
+        public override string ToString()
+        {
+            string checkSign = " ";
+            if (isDone)
+            {
+                checkSign = "X";
+            }
+            return String.Format(" - [{0}] {1}", checkSign, name);
+        }
     }
 }
