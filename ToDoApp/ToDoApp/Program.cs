@@ -38,6 +38,10 @@ namespace ToDoApp
             {
                 CheckTask(args[1]);
             }
+            if (args.Contains("-r"))
+            {
+                RemoveTask(args[1]);
+            }
         }
 
         public static void PrintUsage()
@@ -105,25 +109,20 @@ namespace ToDoApp
                 }
             }
         }
+
+        public static void RemoveTask(string taskToRemove, string path = "./todolist.txt")
+        {
+            var list = FillToDoList(ReadFile());
+            using (StreamWriter writer = new StreamWriter(path))
+            {
+                for (int i = 0; i < list.Count(); i++)
+                {
+                    if (list[i] != list[int.Parse(taskToRemove) - 1])
+                    {
+                        writer.WriteLine(list[i].Name + ";" + list[i].IsDone + ";" + list[i].Description);
+                    }
+                }
+            }
+        }
     }
 }
-
-//if (args.Contains("-r"))
-//{
-//    path = @"./todolist.txt";
-//    content = File.ReadAllLines(path);
-//    using (StreamWriter writer = new StreamWriter(path))
-//    {
-//        for (int i = 0; i < content.Count(); i++)
-//        {
-//            contentDetailed.Add(content[i].Split(';'));
-//        }
-
-//        contentDetailed.RemoveAt(int.Parse(args[1]) - 1);
-
-//        for (int i = 0; i < contentDetailed.Count(); i++)
-//        {
-//            writer.WriteLine(contentDetailed[i][0] + ";" + contentDetailed[i][1] + ";" + contentDetailed[i][2]);
-//        }
-//    }
-//}
