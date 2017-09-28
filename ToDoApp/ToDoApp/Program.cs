@@ -11,6 +11,11 @@ namespace ToDoApp
     {
         static void Main(string[] args)
         {
+            string[] content;
+            string path;
+            List<string[]> contentDetailed = new List<string[]>();
+            string checkSign;
+
             if (args.Length == 0)
             {
                 Console.WriteLine("\n  Command Line Todo application" +
@@ -27,18 +32,25 @@ namespace ToDoApp
             {
                 try
                 {
-                    string path = @"./todolist.txt";
+                    path = @"./todolist.txt";
                     Console.WriteLine("\n");
-                    string[] content = File.ReadAllLines(path);
+                    content = File.ReadAllLines(path);
 
                     if (content.Length != 0)
                     {
-                        List<string[]> contentDetailed = new List<string[]>();
-
                         for (int i = 0; i < content.Count(); i++)
                         {
                             contentDetailed.Add(content[i].Split(';'));
-                            Console.WriteLine("  " + (i + 1) + " - " + contentDetailed[i][0]);
+                            if(contentDetailed[i][1] == "true")
+                            {
+                                checkSign = "[X] ";
+                            }
+                            else
+                            {
+                                checkSign = "[ ] ";
+                            }
+
+                            Console.WriteLine("  " + (i + 1) + " - " + checkSign + contentDetailed[i][0]);
                         }
                     }
                     else
@@ -54,12 +66,31 @@ namespace ToDoApp
 
             if (args.Contains("-a"))
             {
-                string path = @"./todolist.txt";
-                Console.WriteLine("\n");
+                path = @"./todolist.txt";
                 using (StreamWriter writer = File.AppendText(path))
                 {
-                    string inputTask = args[1];
-                    writer.WriteLine(inputTask + ";false;" + inputTask);
+                    writer.WriteLine(args[1] + ";false;" + args[1]);
+                }
+            }
+
+            if (args.Contains("-c"))
+            {
+                path = @"./todolist.txt";
+                content = File.ReadAllLines(path);
+                using (StreamWriter writer = new StreamWriter(path))
+                {
+                    for (int i = 0; i < content.Count(); i++)
+                    {
+                        contentDetailed.Add(content[i].Split(';'));
+                    }
+
+                    int inputTask = int.Parse(args[1]);
+                    contentDetailed[inputTask - 1][1] = "true";
+
+                    for (int i = 0; i < contentDetailed.Count(); i++)
+                    {
+                        writer.WriteLine(contentDetailed[i][0] + ";" + contentDetailed[i][1] + ";" + contentDetailed[i][2]);
+                    }
                 }
             }
         }
