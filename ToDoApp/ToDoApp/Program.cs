@@ -10,51 +10,26 @@ namespace ToDoApp
         static void Main(string[] args)
         {
             string[] content;
-            string path;
-            List<string[]> contentDetailed = new List<string[]>();
+            var toDos = new List<ToDo>(); 
             string checkSign;
 
             if (args.Length == 0)
             {
-                Console.WriteLine("\n  Command Line Todo application" +
-                "\n  =============================" +
-                "\n" +
-                "\n  Command line arguments:" +
-                "\n  -l   Lists all the tasks" +
-                "\n  -a   Adds a new task" +
-                "\n  -r   Removes a task" +
-                "\n  -c   Completes a task");
+                PrintUsage();
             }
 
             if (args.Contains("-l"))
             {
                 try
                 {
-                    path = @"./todolist.txt";
                     Console.WriteLine("\n");
-                    content = File.ReadAllLines(path);
-
-                    if (content.Length != 0)
+                    content = ReadFile();
+                    for (int i = 0; i < content.Count(); i++)
                     {
-                        for (int i = 0; i < content.Count(); i++)
-                        {
-                            contentDetailed.Add(content[i].Split(';'));
-                            if(contentDetailed[i][1] == "true")
-                            {
-                                checkSign = "[X] ";
-                            }
-                            else
-                            {
-                                checkSign = "[ ] ";
-                            }
-
-                            Console.WriteLine("  " + (i + 1) + " - " + checkSign + contentDetailed[i][0]);
-                        }
+                        ToDo todo = new ToDo(content[i]);
+                        toDos.Add(todo);
                     }
-                    else
-                    {
-                        Console.WriteLine("  No todos for today! :) ");
-                    }
+                    WriteToConsole(toDos);
                 }
                 catch (FileNotFoundException)
                 {
@@ -62,53 +37,85 @@ namespace ToDoApp
                 }
             }
 
-            if (args.Contains("-a"))
+            //if (args.Contains("-a"))
+            //{
+            //    path = @"./todolist.txt";
+            //    using (StreamWriter writer = File.AppendText(path))
+            //    {
+            //        writer.WriteLine(args[1] + ";false;" + args[1]);
+            //    }
+            //}
+
+            //if (args.Contains("-c"))
+            //{
+            //    path = @"./todolist.txt";
+            //    content = File.ReadAllLines(path);
+            //    using (StreamWriter writer = new StreamWriter(path))
+            //    {
+            //        for (int i = 0; i < content.Count(); i++)
+            //        {
+            //            contentDetailed.Add(content[i].Split(';'));
+            //        }
+
+            //        int inputTask = int.Parse(args[1]);
+            //        contentDetailed[inputTask - 1][1] = "true";
+
+            //        for (int i = 0; i < contentDetailed.Count(); i++)
+            //        {
+            //            writer.WriteLine(contentDetailed[i][0] + ";" + contentDetailed[i][1] + ";" + contentDetailed[i][2]);
+            //        }
+            //    }
+            //}
+
+            //if (args.Contains("-r"))
+            //{
+            //    path = @"./todolist.txt";
+            //    content = File.ReadAllLines(path);
+            //    using (StreamWriter writer = new StreamWriter(path))
+            //    {
+            //        for (int i = 0; i < content.Count(); i++)
+            //        {
+            //            contentDetailed.Add(content[i].Split(';'));
+            //        }
+
+            //        contentDetailed.RemoveAt(int.Parse(args[1]) - 1);
+
+            //        for (int i = 0; i < contentDetailed.Count(); i++)
+            //        {
+            //            writer.WriteLine(contentDetailed[i][0] + ";" + contentDetailed[i][1] + ";" + contentDetailed[i][2]);
+            //        }
+            //    }
+            //}
+        }
+
+        public static void PrintUsage()
+        {
+            Console.WriteLine("\n  Command Line Todo application" +
+            "\n  =============================" +
+            "\n" +
+            "\n  Command line arguments:" +
+            "\n  -l   Lists all the tasks" +
+            "\n  -a   Adds a new task" +
+            "\n  -r   Removes a task" +
+            "\n  -c   Completes a task");
+        }
+
+        public static string[] ReadFile(string path = "./todolist.txt")
+        {
+            return File.ReadAllLines(path);
+        }
+
+        public static void WriteToConsole(List<ToDo> inputList)
+        {
+            if (inputList.Count == 0)
             {
-                path = @"./todolist.txt";
-                using (StreamWriter writer = File.AppendText(path))
-                {
-                    writer.WriteLine(args[1] + ";false;" + args[1]);
-                }
+                Console.WriteLine("  No todos for today! :) ");
             }
-
-            if (args.Contains("-c"))
+            else
             {
-                path = @"./todolist.txt";
-                content = File.ReadAllLines(path);
-                using (StreamWriter writer = new StreamWriter(path))
+                for (int i = 0; i < inputList.Count(); i++)
                 {
-                    for (int i = 0; i < content.Count(); i++)
-                    {
-                        contentDetailed.Add(content[i].Split(';'));
-                    }
-
-                    int inputTask = int.Parse(args[1]);
-                    contentDetailed[inputTask - 1][1] = "true";
-
-                    for (int i = 0; i < contentDetailed.Count(); i++)
-                    {
-                        writer.WriteLine(contentDetailed[i][0] + ";" + contentDetailed[i][1] + ";" + contentDetailed[i][2]);
-                    }
-                }
-            }
-
-            if (args.Contains("-r"))
-            {
-                path = @"./todolist.txt";
-                content = File.ReadAllLines(path);
-                using (StreamWriter writer = new StreamWriter(path))
-                {
-                    for (int i = 0; i < content.Count(); i++)
-                    {
-                        contentDetailed.Add(content[i].Split(';'));
-                    }
-
-                    contentDetailed.RemoveAt(int.Parse(args[1]) - 1);
-
-                    for (int i = 0; i < contentDetailed.Count(); i++)
-                    {
-                        writer.WriteLine(contentDetailed[i][0] + ";" + contentDetailed[i][1] + ";" + contentDetailed[i][2]);
-                    }
+                    Console.WriteLine((i + 1) + ". - " + inputList[i].ToString());
                 }
             }
         }
