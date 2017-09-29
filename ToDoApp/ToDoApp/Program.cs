@@ -63,13 +63,27 @@ namespace ToDoApp
             }
             if (args.Contains("-c"))
             {
-                CheckTask(args[1]);
-                WriteToConsole(FillToDoList(ReadFile()));
+                if (args.Count() == 1)
+                {
+                    Console.WriteLine("\nUnable to check: no index provided");
+                }
+                else
+                {
+                    CheckTask(args[1]);
+                    WriteToConsole(FillToDoList(ReadFile()));
+                }
             }
             if (args.Contains("-r"))
             {
-                RemoveTask(args[1]);
-                WriteToConsole(FillToDoList(ReadFile()));
+                if (args.Count() == 1)
+                {
+                    Console.WriteLine("\nUnable to remove: no index provided");
+                }
+                else
+                {
+                    RemoveTask(args[1]);
+                    WriteToConsole(FillToDoList(ReadFile()));
+                }
             }
         }       
     }

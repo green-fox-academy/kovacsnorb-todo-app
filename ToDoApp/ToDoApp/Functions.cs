@@ -95,12 +95,6 @@ namespace ToDoApp
         public static void RemoveTask(string taskToRemove, string path = "./todolist.txt")
         {
             var list = FillToDoList(ReadFile());
-            //if (int.Parse(taskToRemove) > list.Count())
-            //{
-            //    Console.WriteLine("\nUnable to remove: index is out of bound");
-            //}
-            //else
-            //{
             using (StreamWriter writer = new StreamWriter(path))
             {
                 for (int i = 0; i < list.Count(); i++)
@@ -111,7 +105,6 @@ namespace ToDoApp
                     }
                 }
             }
-            //}
         }
 
         public static void UnsupportedArg()
