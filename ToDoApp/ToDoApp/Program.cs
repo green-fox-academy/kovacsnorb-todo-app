@@ -35,15 +35,37 @@ namespace ToDoApp
             }
             if (args.Contains("-a"))
             {
-                AddNewTask(args[1]);
+                try
+                {
+                    if (args.Count() == 2)
+                    {
+                        AddNewTask(args[1]);
+                        WriteToConsole(FillToDoList(ReadFile()));
+                    }
+                    else if (1 != int.Parse(args[2]) && 2 != int.Parse(args[2]) && 3 != int.Parse(args[2]))
+                    {
+                        Console.WriteLine("\nPlease, give a priority 1, 2 or 3, or leave it empty to set the priority to the default (MEDIUM).");
+                    }
+                    else
+                    {
+                        AddNewTask(args[1], int.Parse(args[2]));
+                        WriteToConsole(FillToDoList(ReadFile()));
+                    }
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("\nPlease, give a priority 1, 2 or 3, or leave it empty to set the priority to the default (MEDIUM).");
+                }
             }
             if (args.Contains("-c"))
             {
                 CheckTask(args[1]);
+                WriteToConsole(FillToDoList(ReadFile()));
             }
             if (args.Contains("-r"))
             {
                 RemoveTask(args[1]);
+                WriteToConsole(FillToDoList(ReadFile()));
             }
         }
 
@@ -70,7 +92,7 @@ namespace ToDoApp
             for (int i = 0; i < inputArray.Count(); i++)
             {
                 string[] taskToArray = inputArray[i].Split(';');
-                ToDo todo = new ToDo(taskToArray[0], Convert.ToBoolean(taskToArray[1]), taskToArray[2]);
+                ToDo todo = new ToDo(taskToArray[0], Convert.ToBoolean(taskToArray[1]), int.Parse(taskToArray[2]));
                 toDos.Add(todo);
             }
             return toDos;
@@ -84,10 +106,28 @@ namespace ToDoApp
             }
             else
             {
+                Console.WriteLine("\nNo Done? Priority   Task");
                 for (int i = 0; i < toDoList.Count(); i++)
                 {
-                    Console.WriteLine((i + 1) + toDoList[i].ToString());
+                    if( i < 9)
+                    {
+                        Console.WriteLine(" " + (i + 1) + toDoList[i].ToString());
+                    }
+                    else
+                    {
+                        Console.WriteLine((i + 1) + toDoList[i].ToString());
+                    }
                 }
+
+                HighCounter(toDoList);
+            }
+        }
+
+        public static void AddNewTask(string newTask, int priority, string path = "./todolist.txt")
+        {
+            using (StreamWriter writer = File.AppendText(path))
+            {
+                writer.WriteLine(newTask + ";false;" + priority);
             }
         }
 
@@ -95,7 +135,7 @@ namespace ToDoApp
         {
             using (StreamWriter writer = File.AppendText(path))
             {
-                writer.WriteLine(newTask + ";false;" + newTask);
+                writer.WriteLine(newTask + ";false;" + 2);
             }
         }
 
@@ -108,7 +148,7 @@ namespace ToDoApp
 
                 for (int i = 0; i < list.Count(); i++)
                 {
-                    writer.WriteLine(list[i].Name + ";" + list[i].IsDone + ";" + list[i].Description);
+                    writer.WriteLine(list[i].Name + ";" + list[i].IsDone + ";" + list[i].Priority);
                 }
             }
         }
@@ -122,7 +162,7 @@ namespace ToDoApp
                 {
                     if (list[i] != list[int.Parse(taskToRemove) - 1])
                     {
-                        writer.WriteLine(list[i].Name + ";" + list[i].IsDone + ";" + list[i].Description);
+                        writer.WriteLine(list[i].Name + ";" + list[i].IsDone + ";" + list[i].Priority);
                     }
                 }
             }
@@ -132,6 +172,22 @@ namespace ToDoApp
         {
             Console.WriteLine("\n *** Unsupported argument ***");
             PrintUsage();
+        }
+
+        public static void HighCounter(List<ToDo> toDoList)
+        {
+            int counter = 0;
+            for (int i = 0; i < toDoList.Count(); i++)
+            {
+                if (toDoList[i].Priority == 3 && toDoList[i].IsDone != true)
+                {
+                    counter++;
+                }
+            }
+            if (counter > 4)
+            {
+                Console.WriteLine("\nYou have {0} undone HIGH priority tasks. Highest time to take care of those.", counter);
+            }
         }
     }
 }
