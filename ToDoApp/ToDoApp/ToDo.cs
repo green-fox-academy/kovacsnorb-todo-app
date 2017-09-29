@@ -37,8 +37,6 @@ namespace ToDoApp
             {
                 prioSign = "  LOW    ";
             }
-           
-
             return String.Format("  [{0}]  {1}  {2}", checkSign, prioSign, Name);
         }
 
